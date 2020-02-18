@@ -20,9 +20,6 @@
  */
 #ifndef http_parser_h
 #define http_parser_h
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /* Also update SONAME in the Makefile whenever you change these. */
 #define HTTP_PARSER_VERSION_MAJOR 2
@@ -62,7 +59,6 @@ typedef unsigned __int64 uint64_t;
 #ifndef HTTP_MAX_HEADER_SIZE
 # define HTTP_MAX_HEADER_SIZE (80*1024)
 #endif
-
 typedef struct http_parser http_parser;
 typedef struct http_parser_settings http_parser_settings;
 
@@ -85,9 +81,12 @@ typedef struct http_parser_settings http_parser_settings;
  * many times for each string. E.G. you might get 10 callbacks for "on_url"
  * each providing just a few characters more data.
  */
-typedef int (*http_data_cb) (http_parser*, const char *at, size_t length);
-typedef int (*http_cb) (http_parser*);
+#include <functional>
 
+//typedef int (*http_data_cb) (http_parser*, const char *at, size_t length);
+//typedef int (*http_cb) (http_parser*);
+using http_data_cb=std::function<int(http_parser *,const char *at,size_t length)>;
+using http_cb=std::function<int(http_parser*)>;
 
 /* Status Codes */
 #define HTTP_STATUS_MAP(XX)                                                 \
@@ -436,7 +435,5 @@ int http_body_is_final(const http_parser *parser);
 /* Change the maximum header size provided at compile time. */
 void http_parser_set_max_header_size(uint32_t size);
 
-#ifdef __cplusplus
-}
-#endif
+
 #endif
