@@ -59,8 +59,8 @@ typedef unsigned __int64 uint64_t;
 #ifndef HTTP_MAX_HEADER_SIZE
 # define HTTP_MAX_HEADER_SIZE (80*1024)
 #endif
-typedef struct http_parser http_parser;
-typedef struct http_parser_settings http_parser_settings;
+//typedef struct http_parser http_parser;
+//typedef struct http_parser_settings http_parser_settings;
 
 
 /* Callbacks should return non-zero to indicate an error. The parser will
@@ -85,6 +85,8 @@ typedef struct http_parser_settings http_parser_settings;
 
 //typedef int (*http_data_cb) (http_parser*, const char *at, size_t length);
 //typedef int (*http_cb) (http_parser*);
+struct http_parser;
+
 using http_data_cb=std::function<int(http_parser *,const char *at,size_t length)>;
 using http_cb=std::function<int(http_parser*)>;
 
